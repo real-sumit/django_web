@@ -3,6 +3,16 @@
 {% block title %}Contacts{% endblock title %}
 
 {% block body %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show my-0" role="alert">
+    <strong>{{ message }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+
 <div class="container-fluid px-0 mb-3">
     <img src="https://source.unsplash.com/1200x400/?phone,contacts" class="d-block w-100 mx-0" alt="...">
 </div>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from datetime import datetime
 from .models import Person
+from django.contrib import messages
 
 def index(request):
     return render(request, "index.html")
@@ -20,6 +21,7 @@ def contact(request):
         desc = request.POST.get('desc')
         cnt = Person(name=name, email=email, phone=phone, desc=desc, date=datetime.today())
         cnt.save()
+        messages.success(request, "The message has been sent!")
     return render(request, "contact.html")
 
 # passing value to the templates 
