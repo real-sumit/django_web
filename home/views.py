@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from datetime import datetime
-from home.models import Person
+from .models import Person
 
 def index(request):
     return render(request, "index.html")
