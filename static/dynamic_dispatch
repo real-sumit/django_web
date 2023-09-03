@@ -1,0 +1,54 @@
+struct Data {
+    data: *mut (),
+}
+
+struct Vtable {
+    make_sound: unsafe fn(*const ()) -> String,
+}
+
+struct Cat {
+    lives: i32,
+}
+
+unsafe fn cat_make_sound(cat: *const ()) -> String {
+    let cat = &*(cat as *const Cat);
+    format!("meow. i have {} lives.", cat.lives)
+}
+
+struct Dog {
+    name: String,
+}
+
+unsafe fn dog_make_sound(dog: *const ()) -> String {
+    let dog = &*(dog as *const Dog);
+    format!("woof! my name is {}.", dog.name)
+}
+
+fn main() {
+    let mut cat = Cat { lives: 9 };
+    let mut dog = Dog {
+        name: "billy".to_owned(),
+    };
+    let mut v: Vec<(Data, Vtable)> = Vec::new();
+    v.push((
+        Data {
+            data: &mut cat as *mut Cat as *mut (),
+        },
+        Vtable {
+            make_sound: cat_make_sound,
+        },
+    ));
+    v.push((
+        Data {
+            data: &mut dog as *mut Dog as *mut (),
+        },
+        Vtable {
+            make_sound: dog_make_sound,
+        },
+    ));
+
+    for animal in v.iter() {
+        let (data, vtable) = animal;
+        println!("{}", unsafe { (vtable.make_sound)(data.data as *const ()) })
+    }
+}
